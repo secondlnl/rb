@@ -75,6 +75,7 @@ GameObject:
   - component: {fileID: 3972985531394964581}
   - component: {fileID: 1939945858525134359}
   - component: {fileID: 4965776525922895004}
+  - component: {fileID: 8740125995657860555}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -174,7 +175,7 @@ Rigidbody2D:
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_GravityScale: 2
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: b4454824567af5b4d9022e20313e2754, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -241,3 +242,25 @@ MonoBehaviour:
     m_Bits: 64
   leftFoot: {fileID: 673672431304751043}
   rightFoot: {fileID: 6764667573524741290}
+--- !u!95 &8740125995657860555
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933632956372703724}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: d83b210138048ea49903571fdff70858, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
