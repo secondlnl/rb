@@ -4,6 +4,7 @@ public class PlayerMovement : MonoBehaviour
 {
     private Rigidbody2D rb;
     private SpriteRenderer sr;
+    private Animator anim;
     [SerializeField] private float moveSpeed = 300f;
     [SerializeField] private float jumpForce = 300f;
     [SerializeField] private LayerMask whatIsGround;
@@ -16,19 +17,12 @@ public class PlayerMovement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
+        anim = GetComponent<Animator>();
     }
     void Update()
     {
         horizontalAxis = Input.GetAxis("Horizontal");
-        if (Input.GetButtonDown("Jump") && CheckGround() == true)
-        {
-            Jump();
-        }
 
-    }
-
-    private void FixedUpdate()
-    {
         if (horizontalAxis > 0)
         {
             FlipSprite(true);
@@ -38,6 +32,19 @@ public class PlayerMovement : MonoBehaviour
         {
             FlipSprite(false);
         }
+
+        if (Input.GetButtonDown("Jump") && CheckGround() == true)
+        {
+            Jump();
+        }
+        anim.SetFloat("MoveSpeed", Mathf.Abs(rb.linearVelocityX));
+        anim.SetFloat("VerticalSpeed", rb.linearVelocityY);
+        anim.SetBool("isGrounded", CheckGround());
+    }
+
+    private void FixedUpdate()
+    {
+
         rb.linearVelocity = new Vector2(horizontalAxis * moveSpeed * Time.deltaTime, rb.linearVelocityY);
     }
     private void Jump()
