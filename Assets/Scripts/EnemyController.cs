@@ -3,7 +3,9 @@ using UnityEngine;
 public class EnemyController : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 1f;
-    [SerializeField] private float knockbackForce = 100f;
+    [SerializeField] private float knockbackForce = 400f;
+    [SerializeField] private float killBounce = 100f;
+    [SerializeField] private float uplift = 180f;
     [SerializeField] private int damage = 1;
 
     private SpriteRenderer sp;
@@ -32,6 +34,16 @@ public class EnemyController : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             other.gameObject.GetComponent<PlayerMovement>().TakeDamage(damage);
+
+            if (other.transform.position.x > transform.position.x)
+            {
+                other.gameObject.GetComponent<PlayerMovement>().TakeKnockback(knockbackForce, uplift);
+            }
+            else
+            {
+                other.gameObject.GetComponent<PlayerMovement>().TakeKnockback(-knockbackForce, uplift);
+
+            }
         }
     }
     void OnTriggerEnter2D(Collider2D other)
@@ -39,7 +51,7 @@ public class EnemyController : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             other.GetComponent<Rigidbody2D>().linearVelocity = new Vector2(other.GetComponent<Rigidbody2D>().linearVelocityX, 0);
-            other.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, knockbackForce));
+            other.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, killBounce));
             Destroy(gameObject);
         }
     }
