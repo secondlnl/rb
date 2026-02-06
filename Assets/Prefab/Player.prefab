@@ -236,12 +236,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
   moveSpeed: 300
+  healthSlider: {fileID: 0}
+  healthGreen: {r: 0.101960786, g: 1, b: 0, a: 1}
+  healthRed: {r: 1, g: 0.3483282, b: 0, a: 1}
+  fillColour: {fileID: 0}
   jumpForce: 400
   whatIsGround:
     serializedVersion: 2
     m_Bits: 64
   leftFoot: {fileID: 673672431304751043}
   rightFoot: {fileID: 6764667573524741290}
+  respawnPoint: {fileID: 0}
+  startingHealth: 5
 --- !u!95 &8740125995657860555
 Animator:
   serializedVersion: 7
