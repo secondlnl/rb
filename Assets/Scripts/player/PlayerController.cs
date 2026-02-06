@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -6,15 +7,24 @@ public class PlayerMovement : MonoBehaviour
     private SpriteRenderer sr;
     private Animator anim;
     [SerializeField] private float moveSpeed = 300f;
+    [SerializeField] private Slider healthSlider;
+    [SerializeField] private Color healthGreen;
+    [SerializeField] private Color healthRed;
+    [SerializeField] private Image fillColour;
     [SerializeField] private float jumpForce = 300f;
     [SerializeField] private LayerMask whatIsGround;
-    private float rayDistance = 0.25f;
     [SerializeField] private Transform leftFoot, rightFoot;
+    [SerializeField] private Transform respawnPoint;
+    private float rayDistance = 0.25f;
+    [SerializeField] private int startingHealth = 5;
+    private int currentHealth = 0;
     private bool isGrounded;
     private float horizontalAxis;
 
     void Start()
     {
+        currentHealth = startingHealth;
+        UpdateHealthBar();
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
@@ -50,6 +60,36 @@ public class PlayerMovement : MonoBehaviour
     private void Jump()
     {
         rb.AddForce(new Vector2(0, jumpForce));
+    }
+    public void TakeDamage(int hitTaken)
+    {
+        currentHealth -= hitTaken;
+        UpdateHealthBar();
+        if (currentHealth <= 0)
+        {
+            Respawn();
+        }
+    }
+    private void Respawn()
+    {
+        currentHealth = startingHealth;
+        UpdateHealthBar();
+        transform.position = respawnPoint.position;
+        rb.linearVelocity = Vector2.zero;
+    }
+    private void UpdateHealthBar()
+    {
+        healthSlider.value = currentHealth;
+
+        if (currentHealth >= 2)
+        {
+            fillColour.color = healthGreen;
+        }
+        else
+        {
+
+            fillColour.color = healthRed;
+        }
     }
     private void FlipSprite(bool direction)
     {
