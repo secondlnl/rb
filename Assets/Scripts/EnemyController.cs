@@ -4,6 +4,7 @@ public class EnemyController : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 1f;
     [SerializeField] private float knockbackForce = 100f;
+    [SerializeField] private int damage = 1;
 
     private SpriteRenderer sp;
 
@@ -27,6 +28,10 @@ public class EnemyController : MonoBehaviour
         if (other.gameObject.CompareTag("EnemyBlock") || other.gameObject.CompareTag("Enemy"))
         {
             moveSpeed = -moveSpeed;
+        }
+        if (other.gameObject.CompareTag("Player"))
+        {
+            other.gameObject.GetComponent<PlayerMovement>().TakeDamage(damage);
         }
     }
     void OnTriggerEnter2D(Collider2D other)
