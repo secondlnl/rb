@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,18 +7,22 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D rb;
     private SpriteRenderer sr;
     private Animator anim;
+    private bool knockedOut = false;
+
     [SerializeField] private float moveSpeed = 300f;
     [SerializeField] private Slider healthSlider;
     [SerializeField] private Color healthGreen;
     [SerializeField] private Color healthRed;
+    [SerializeField] private TMP_Text coinText;
     [SerializeField] private Image fillColour;
     [SerializeField] private float jumpForce = 300f;
     [SerializeField] private LayerMask whatIsGround;
     [SerializeField] private Transform leftFoot, rightFoot;
     [SerializeField] private Transform respawnPoint;
-    private float rayDistance = 0.25f;
     [SerializeField] private int startingHealth = 5;
+    private float rayDistance = 0.25f;
     private int currentHealth = 0;
+    private int collectedCoins = 0;
     private bool isGrounded;
     private float horizontalAxis;
 
@@ -25,6 +30,7 @@ public class PlayerMovement : MonoBehaviour
     {
         currentHealth = startingHealth;
         UpdateHealthBar();
+        coinText.text = "" + collectedCoins;
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
@@ -38,7 +44,7 @@ public class PlayerMovement : MonoBehaviour
             FlipSprite(true);
 
         }
-        if (horizontalAxis < 0)
+        else if (horizontalAxis < 0)
         {
             FlipSprite(false);
         }
@@ -54,8 +60,22 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-
+        if (knockedOut) { return; }
         rb.linearVelocity = new Vector2(horizontalAxis * moveSpeed * Time.deltaTime, rb.linearVelocityY);
+    }
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Coin"))
+        {
+            Destroy(other.gameObject);
+            collectedCoins++;
+            coinText.text = "" + collectedCoins;
+
+        }
+        if (other.CompareTag("Heart"))
+        {
+            HealUp(other.gameObject);
+        }
     }
     private void Jump()
     {
@@ -71,11 +91,35 @@ public class PlayerMovement : MonoBehaviour
         }
     }
     private void Respawn()
+
     {
         currentHealth = startingHealth;
         UpdateHealthBar();
         transform.position = respawnPoint.position;
         rb.linearVelocity = Vector2.zero;
+    }
+    public void TakeKnockback(float knocked, float uplift)
+    {
+        knockedOut = true;
+        rb.AddForce(new Vector2(knocked, uplift));
+        Invoke("CanMove", 0.25f);
+    }
+    private void CanMove()
+    {
+        knockedOut = false;
+    }
+    private void HealUp(GameObject obj)
+    {
+        if (currentHealth >= startingHealth) { return; }
+        else
+        {
+            int health = obj.GetComponent<Heart>().healingPower;
+            currentHealth += health;
+            UpdateHealthBar();
+            Destroy(obj);
+            if (currentHealth >= startingHealth) { currentHealth = startingHealth; }
+        }
+
     }
     private void UpdateHealthBar()
     {
