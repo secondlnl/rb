@@ -22,7 +22,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private int startingHealth = 5;
     private float rayDistance = 0.25f;
     private int currentHealth = 0;
-    private int collectedCoins = 0;
+    public int collectedCoins = 0;
     private bool isGrounded;
     private float horizontalAxis;
 
@@ -48,7 +48,7 @@ public class PlayerMovement : MonoBehaviour
         {
             FlipSprite(false);
         }
-
+        if (Input.GetButtonDown("Fire1")) { print("hi00"); }
         if (Input.GetButtonDown("Jump") && CheckGround() == true)
         {
             Jump();
