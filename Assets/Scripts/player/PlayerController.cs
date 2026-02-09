@@ -8,8 +8,11 @@ public class PlayerMovement : MonoBehaviour
     private SpriteRenderer sr;
     private Animator anim;
     private bool knockedOut = false;
-
+    private AudioSource audSrc;
     [SerializeField] private float moveSpeed = 300f;
+    [SerializeField] private GameObject pickUpPart, jumpPart;
+    [SerializeField] private AudioClip[] pickups, jumps;
+    [SerializeField] private float volume = 0.5f;
     [SerializeField] private Slider healthSlider;
     [SerializeField] private Color healthGreen;
     [SerializeField] private Color healthRed;
@@ -34,6 +37,7 @@ public class PlayerMovement : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
+        audSrc = GetComponent<AudioSource>();
     }
     void Update()
     {
@@ -70,6 +74,10 @@ public class PlayerMovement : MonoBehaviour
             Destroy(other.gameObject);
             collectedCoins++;
             coinText.text = "" + collectedCoins;
+            audSrc.pitch = Random.Range(0.5f, 1.2f);
+            int randomValue = Random.Range(0, jumps.Length);
+            audSrc.PlayOneShot(pickups[randomValue], volume);
+            Instantiate(pickUpPart, other.transform.position, Quaternion.identity);
 
         }
         if (other.CompareTag("Heart"))
@@ -80,6 +88,11 @@ public class PlayerMovement : MonoBehaviour
     private void Jump()
     {
         rb.AddForce(new Vector2(0, jumpForce));
+        audSrc.pitch = 1;
+        int randomValue = Random.Range(0, jumps.Length);
+        audSrc.PlayOneShot(jumps[randomValue], volume);
+        Instantiate(jumpPart, transform.position, jumpPart.transform.localRotation);
+
     }
     public void TakeDamage(int hitTaken)
     {
