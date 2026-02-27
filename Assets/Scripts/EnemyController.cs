@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
-    [SerializeField] private float moveSpeed = 1f;
+    [SerializeField] private float moveSpeed = 2f;
     [SerializeField] private float knockbackForce = 400f;
     [SerializeField] private float killBounce = 100f;
     [SerializeField] private float uplift = 180f;
@@ -13,6 +13,7 @@ public class EnemyController : MonoBehaviour
 
     void Start()
     {
+        moveSpeed = Random.Range(1f, 2.5f);
         sp = GetComponent<SpriteRenderer>();
     }
 
@@ -33,15 +34,15 @@ public class EnemyController : MonoBehaviour
         }
         if (other.gameObject.CompareTag("Player"))
         {
-            other.gameObject.GetComponent<PlayerMovement>().TakeDamage(damage);
+            other.gameObject.GetComponent<PlayerController>().TakeDamage(damage);
 
             if (other.transform.position.x > transform.position.x)
             {
-                other.gameObject.GetComponent<PlayerMovement>().TakeKnockback(knockbackForce, uplift);
+                other.gameObject.GetComponent<PlayerController>().TakeKnockback(knockbackForce, uplift);
             }
             else
             {
-                other.gameObject.GetComponent<PlayerMovement>().TakeKnockback(-knockbackForce, uplift);
+                other.gameObject.GetComponent<PlayerController>().TakeKnockback(-knockbackForce, uplift);
 
             }
         }

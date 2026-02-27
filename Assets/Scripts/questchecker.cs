@@ -14,7 +14,7 @@ public class questchecker : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             dialogBox.SetActive(true);
-            if (other.GetComponent<PlayerMovement>().collectedCoins >= QuestGoal)
+            if (other.GetComponent<PlayerController>().collectedCoins >= QuestGoal)
             {
                 finishText.SetActive(true);
                 loading = true;

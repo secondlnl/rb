@@ -1772,7 +1772,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tilemap_51
+      name: climb_top
       rect:
         serializedVersion: 2
         x: 209
@@ -2212,7 +2212,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tilemap_71
+      name: climb_bot
       rect:
         serializedVersion: 2
         x: 209
@@ -4628,6 +4628,8 @@ TextureImporter:
       GrassTopLeft: 5645451735475491846
       GrassTopMid: 1432774421400288080
       GrassTopRight: 4865326696082551069
+      climb_bot: 8388207307120750826
+      climb_top: -190942367214245151
       switch: -8129655836590701982
       switch-right: 2628091620012382583
       tilemap_0: 8490642196906846815
@@ -4752,7 +4754,6 @@ TextureImporter:
       tilemap_49: 3212541487564439254
       tilemap_5: -8420670720628680731
       tilemap_50: -6140826305895023941
-      tilemap_51: -190942367214245151
       tilemap_52: -6361271296530862326
       tilemap_53: 403813026361821555
       tilemap_54: -979089462801025887
@@ -4772,7 +4773,6 @@ TextureImporter:
       tilemap_69: 3113743566345720758
       tilemap_7: 4755373664117421245
       tilemap_70: 3242445901158374030
-      tilemap_71: 8388207307120750826
       tilemap_72: 749326418515318850
       tilemap_73: 9478795197586167
       tilemap_74: 4182479260922306610

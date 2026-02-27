@@ -9,6 +9,8 @@ TagManager:
   - Enemy
   - Coin
   - Heart
+  - Spawn
+  - Item
   layers:
   - Default
   - TransparentFX
