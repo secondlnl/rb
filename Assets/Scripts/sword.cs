@@ -4,15 +4,9 @@ public class sword : MonoBehaviour
 {
     [SerializeField] private GameObject swordPart;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public void attack(int direct)
     {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
+        Instantiate(swordPart, transform.position + new Vector3(1f, 0f) * direct, Quaternion.identity);
 
     }
     void OnTriggerEnter2D(Collider2D other)
@@ -20,7 +14,6 @@ public class sword : MonoBehaviour
         if (other.CompareTag("Enemy"))
         {
             //other.GetComponent<SpriteRenderer>().color = Color.black;
-            Instantiate(swordPart, other.transform.position, Quaternion.identity);
 
             Destroy(other.gameObject);
         }

@@ -20,6 +20,7 @@ public class vine : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            other.gameObject.GetComponent<PlayerController>().canHurt = false;
             anim.enabled = true;
             // other.transform.position = new Vector3(other.transform.position.x, other.transform.position.y + startpos);
             other.transform.SetParent(transform);
@@ -30,6 +31,8 @@ public class vine : MonoBehaviour
         GameObject.FindGameObjectWithTag("Player").transform.SetParent(null);
         GameObject.FindGameObjectWithTag("Player").transform.rotation = Quaternion.identity;
         GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody2D>().AddForce(new Vector2(0, stepBoost));
+        GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().canHurt = true;
+
 
     }
 }

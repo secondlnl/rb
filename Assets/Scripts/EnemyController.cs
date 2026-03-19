@@ -32,7 +32,7 @@ public class EnemyController : MonoBehaviour
         {
             moveSpeed = -moveSpeed;
         }
-        if (other.gameObject.CompareTag("Player"))
+        if (other.gameObject.CompareTag("Player") && other.gameObject.GetComponent<PlayerController>().canHurt)
         {
             other.gameObject.GetComponent<PlayerController>().TakeDamage(damage);
 

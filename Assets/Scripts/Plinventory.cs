@@ -7,9 +7,9 @@ public class Plinventory : MonoBehaviour
     public List<Item> Inventory = new List<Item>();
 
     [SerializeField] private GameObject slot, inventoryPanel, lanternBut, SwordBut;
-    private bool haveLantern;
+    public bool haveLantern;
     private PlayerController Plc;
-    private string currentItem = "";
+    public string currentItem = "";
     private Image slotImg;
     [SerializeField] private Sprite sword, lantern;
     private Color invis;
@@ -21,10 +21,11 @@ public class Plinventory : MonoBehaviour
         slotImg = GetComponent<Image>();
         slotImg.enabled = false;
         slot.GetComponent<Image>().enabled = false;
+
     }
 
     /// <summary>
-    /// Checks if the slot is active 
+    /// Checks if the slot is active
     /// </summary>
     /// <returns>true if the slot is active, false if the slot is not active</returns>
     public bool isActive()
@@ -34,6 +35,7 @@ public class Plinventory : MonoBehaviour
     public void Activate()
     {
         slotImg.enabled = true;
+        currentItem = "empty";
         slot.GetComponent<Image>().enabled = true;
         slotImg.color = invis;
     }
@@ -45,9 +47,8 @@ public class Plinventory : MonoBehaviour
         }
         if (str.ToLower() == "lantern")
         {
-            Debug.Log("!");
-            Debug.Log(str.ToLower() == "lantern");
             haveLantern = true;
+            GetComponentInParent<PlayerController>().Lit(true);
         }
         Debug.Log(str);
         Item tmp = new Item(str, sprite);
@@ -58,10 +59,16 @@ public class Plinventory : MonoBehaviour
     }
     public void UpdateInventory()
     {
-        if (Plc.haveSword && !SwordBut.activeInHierarchy)
+        // if (Plc.haveSword && !SwordBut.activeInHierarchy)
+        // {
+        //     SwordBut.SetActive(true);
+        // }
+
+        if (!haveLantern && lanternBut.activeInHierarchy)
         {
-            SwordBut.SetActive(true);
+            lanternBut.SetActive(false);
         }
+
         if (haveLantern && !lanternBut.activeInHierarchy)
         {
             lanternBut.SetActive(true);
@@ -69,17 +76,28 @@ public class Plinventory : MonoBehaviour
     }
     public void SetCurrentItem(string str, Sprite sprite)
     {
-        currentItem = str;
-        slotImg.sprite = sprite;
+        switch (str)
+        {
+            case "empty":
+                currentItem = "empty";
+                slotImg.sprite = null;
+                slotImg.color = invis;
+                GetComponentInParent<PlayerController>().Lit(false);
+                break;
+            default:
+                currentItem = str;
+                slotImg.sprite = sprite;
+                slotImg.color = Color.white;
+                break;
+        }
     }
     public void SetCurrentItemSword()
     {
-        Debug.Log("Hi");
         SetCurrentItem("Sword", sword);
     }
     public void SetCurrentItemLantern()
     {
-        Debug.Log("Hi");
+        GetComponentInParent<PlayerController>().Lit(true);
         SetCurrentItem("Lantern", lantern);
 
     }

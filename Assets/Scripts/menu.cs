@@ -5,7 +5,11 @@ public class menu : MonoBehaviour
 {
     public void Startgame()
     {
-        SceneManager.LoadSceneAsync("LevelOne");
+        SceneManager.LoadScene(1);
+    }
+    public void Quit()
+    {
+        Application.Quit();
     }
     public void ShowCredits() { }
     public void ShowOptions()

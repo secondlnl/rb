@@ -13,8 +13,8 @@ public class PlayerController : MonoBehaviour
     private AudioSource audSrc;
     private List<Item> dummyinventory = new List<Item>();
     [SerializeField] private float moveSpeed = 300f;
-    public bool haveSword = false, haveBelt = false, isPaused = false;
-    [SerializeField] private GameObject sword, belt, inventoryPanel;
+    public bool haveSword = false, haveBelt = false, isPaused = false, canHurt = true;
+    [SerializeField] private GameObject sword, belt, inventoryPanel, lantern;
     [SerializeField] private GameObject pickUpPart, jumpPart;
     [SerializeField] private AudioClip[] pickups, jumps, hits;
     [SerializeField] private float volume = 0.5f;
@@ -31,6 +31,7 @@ public class PlayerController : MonoBehaviour
     private float rayDistance = 0.25f;
     private int currentHealth = 0;
     public int collectedCoins = 0;
+    private bool direction;
     private bool isGrounded;
     [SerializeField] private GameObject inventory;
     // private bool DouJump = false;
@@ -49,10 +50,11 @@ public class PlayerController : MonoBehaviour
         sr = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
         audSrc = GetComponent<AudioSource>();
+        Lit(GetComponentInChildren<Plinventory>().haveLantern);
     }
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape) && haveBelt)
+        if (haveBelt && Input.GetKeyDown(KeyCode.Escape) || haveBelt && Input.GetKeyDown(KeyCode.E) || haveBelt && Input.GetKeyDown(KeyCode.I))
         {
 
             inventoryPanel.SetActive(!inventoryOpen);
@@ -79,7 +81,7 @@ public class PlayerController : MonoBehaviour
         {
             FlipSprite(true);
         }
-        if (Input.GetButtonDown("Fire1") || Input.GetKeyDown(KeyCode.Z) && haveSword == true) { Attack(); }
+        if (Input.GetButtonDown("Fire1") && haveSword || Input.GetKeyDown(KeyCode.Z) && haveSword == true) { Attack(); }
         if (Input.GetButtonDown("Jump") && CheckGround())
         {
             Jump();
@@ -157,6 +159,8 @@ public class PlayerController : MonoBehaviour
     }
     public void TakeDamage(int hitTaken)
     {
+        if (!canHurt) return;
+
         currentHealth -= hitTaken;
         UpdateHealthBar();
         audSrc.pitch = 0.75f;
@@ -177,6 +181,8 @@ public class PlayerController : MonoBehaviour
     }
     public void TakeKnockback(float knocked, float uplift)
     {
+        if (!canHurt) return;
+
         knockedOut = true;
         rb.AddForce(new Vector2(knocked, uplift));
         Invoke("CanMove", 0.25f);
@@ -214,6 +220,7 @@ public class PlayerController : MonoBehaviour
     }
     private void FlipSprite(bool direction)
     {
+        this.direction = direction;
         if (direction)
         {
             transform.localScale = new Vector3(-1, 1);
@@ -249,9 +256,24 @@ public class PlayerController : MonoBehaviour
     }
     private void Attack()
     {
-        sword.GetComponent<BoxCollider2D>().enabled = true;
-        sword.GetComponent<BoxCollider2D>().isTrigger = true;
-        Invoke("stopAttack", 0.2f);
+        if (haveSword)
+        {
+            sword.GetComponent<BoxCollider2D>().enabled = true;
+            sword.GetComponent<BoxCollider2D>().isTrigger = true;
+            if (direction)
+            {
+                sword.GetComponent<sword>().attack(-1);
+            }
+            else
+            {
+                sword.GetComponent<sword>().attack(1);
+            }
+
+            audSrc.pitch = 0.75f;
+            int randomValue = Random.Range(0, hits.Length);
+            audSrc.PlayOneShot(hits[randomValue], volume);
+            Invoke("stopAttack", 0.2f);
+        }
     }
     private void stopAttack()
     {
@@ -260,5 +282,9 @@ public class PlayerController : MonoBehaviour
             sword.GetComponent<BoxCollider2D>().isTrigger = false;
             sword.GetComponent<BoxCollider2D>().enabled = false;
         }
+    }
+    public void Lit(bool ok)
+    {
+        lantern.SetActive(ok);
     }
 }
